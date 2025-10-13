@@ -21,7 +21,7 @@ terraform init      # Setup Terraform provider
 terraform plan      # Preview changes
 terraform apply     # Deploy container
 terraform destroy   # Remove container
-
+```
 ## Project Structure
 
 ├── provider.tf # Docker provider using SSH to remote Ubuntu host
