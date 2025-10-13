@@ -24,10 +24,12 @@ terraform destroy   # Remove container
 ```
 ## Project Structure
 
-├── provider.tf # Docker provider using SSH to remote Ubuntu host
-├── main.tf # NGINX container definition and port mapping
-├── .gitignore # Terraform and VS Code exclusions
-├── README.md # Project overview and usage
+terraform-nginx-lab/
+├── provider.tf         # Docker provider using SSH to remote Ubuntu host
+├── main.tf             # NGINX container definition and port mapping
+├── .gitignore          # Terraform and VS Code exclusions
+├── README.md           # Project overview and usage
+
 
 ## Next Steps
 
