@@ -11,3 +11,21 @@ resource "docker_container" "nginx" {
     external = 8080
   }
 }
+
+resource "docker_image" "flask_app" {
+  name         = "flask_app:latest"
+  build {
+    context    = "${path.module}/flask-app"
+    dockerfile = "Dockerfile"
+  }
+  keep_locally = false
+}
+
+resource "docker_container" "flask_app" {
+  name  = "myflaskapp"
+  image = docker_image.flask_app.name
+  ports {
+    internal = 5000
+    external = 5001
+  }
+}
