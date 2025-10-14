@@ -19,6 +19,8 @@ resource "docker_container" "nginx" {
   networks_advanced {
     name = docker_network.app_net.name
   }
+
+  depends_on = [ docker_container.flask_app ]
 }
 
 
