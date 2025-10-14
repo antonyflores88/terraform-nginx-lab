@@ -3,7 +3,7 @@ resource "docker_image" "nginx" {
 
   build {
     context    = "${path.module}/nginx-custom"
-    dockerfile = "Dockerfile"
+    dockerfile = "${path.module}/nginx-custom/Dockerfile"
   }
 }
 
@@ -43,7 +43,9 @@ resource "docker_container" "flask_app" {
     external = 5001
   }
 
-  network_mode = docker_network.app_net.name
+  networks_advanced {
+    name = docker_network.app_net.name
+  }
 
 }
 
