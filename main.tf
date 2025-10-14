@@ -4,13 +4,25 @@ resource "docker_image" "nginx" {
 }
 
 resource "docker_container" "nginx" {
-  name  = "mynginx"
-  image = docker_image.nginx.name
+  name  = "nginx-lab"
+  image = docker_image.nginx.latest
+
   ports {
     internal = 80
     external = 8080
   }
+
+  volumes {
+    host_path      = "${path.module}/nginx.conf"
+    container_path = "/etc/nginx/nginx.conf"
+  }
+
+  networks {
+    name = docker_network.app_net.name
+  }
 }
+
+
 
 resource "docker_image" "flask_app" {
   name         = "flask_app:latest"
@@ -24,8 +36,21 @@ resource "docker_image" "flask_app" {
 resource "docker_container" "flask_app" {
   name  = "myflaskapp"
   image = docker_image.flask_app.name
+
   ports {
     internal = 5000
     external = 5001
   }
+
+  networks {
+    name = docker_network.app_net.name
+  }
 }
+
+
+resource "docker_network" "app_net" {
+  name = "app_net"
+
+}
+
+
