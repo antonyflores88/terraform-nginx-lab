@@ -5,7 +5,7 @@ resource "docker_image" "nginx" {
 
 resource "docker_container" "nginx" {
   name  = "nginx-lab"
-  image = docker_image.nginx.latest
+  image = docker_image.nginx.name
 
   ports {
     internal = 80
@@ -17,9 +17,8 @@ resource "docker_container" "nginx" {
     container_path = "/etc/nginx/nginx.conf"
   }
 
-  networks {
-    name = docker_network.app_net.name
-  }
+  network_mode = docker_network.app_net.name
+
 }
 
 
@@ -42,9 +41,8 @@ resource "docker_container" "flask_app" {
     external = 5001
   }
 
-  networks {
-    name = docker_network.app_net.name
-  }
+  network_mode = docker_network.app_net.name
+
 }
 
 
