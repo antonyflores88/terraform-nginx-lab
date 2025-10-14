@@ -16,7 +16,9 @@ resource "docker_container" "nginx" {
     external = 8080
   }
 
-  network_mode = docker_network.app_net.name
+  networks_advanced {
+    name = docker_network.app_net.name
+  }
 }
 
 
