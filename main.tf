@@ -1,6 +1,10 @@
 resource "docker_image" "nginx" {
   name = "nginx:latest"
-  keep_locally = false
+}
+
+resource "docker_network" "app_net" {
+  name = "app_net"
+
 }
 
 resource "docker_container" "nginx" {
@@ -20,6 +24,7 @@ resource "docker_container" "nginx" {
   network_mode = docker_network.app_net.name
 
 }
+
 
 
 
@@ -45,10 +50,5 @@ resource "docker_container" "flask_app" {
 
 }
 
-
-resource "docker_network" "app_net" {
-  name = "app_net"
-
-}
 
 
