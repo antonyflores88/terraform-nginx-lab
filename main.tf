@@ -16,10 +16,11 @@ resource "docker_container" "nginx" {
     external = 8080
   }
 
-  #volumes {
-  #host_path = replace(abspath("${path.module}/nginx.conf"), "\\", "/")
-  #container_path = "/etc/nginx/nginx.conf"
-  #}
+  volumes {
+  host_path      = replace(abspath("${path.module}/nginx.conf"), "\\", "/")
+  container_path = "/etc/nginx/nginx.conf"
+  }
+
 
   network_mode = docker_network.app_net.name
 
