@@ -1,10 +1,10 @@
 resource "docker_image" "nginx" {
-  name = "nginx:latest"
-}
+  name = "custom-nginx:latest"
 
-resource "docker_network" "app_net" {
-  name = "app_net"
-
+  build {
+    context    = "${path.module}/nginx-custom"
+    dockerfile = "Dockerfile"
+  }
 }
 
 resource "docker_container" "nginx" {
@@ -16,16 +16,9 @@ resource "docker_container" "nginx" {
     external = 8080
   }
 
-  volumes {
-    host_path      = replace(abspath("${path.module}/nginx.conf"), "\\", "/")
-    container_path = "/etc/nginx/conf.d/default.conf"
-  }
-
-
-
   network_mode = docker_network.app_net.name
-
 }
+
 
 
 
@@ -53,4 +46,7 @@ resource "docker_container" "flask_app" {
 }
 
 
+resource "docker_network" "app_net" {
+  name = "app_net"
 
+}
