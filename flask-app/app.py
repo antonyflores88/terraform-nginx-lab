@@ -1,17 +1,26 @@
 from flask import Flask, Response
+import os
+
 app = Flask(__name__)
 
+#Getting environment variables
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'dev')
+@app.route('/env')
+def get_environment():
+    return f"Current Environment: {ENVIRONMENT}", 200
 @app.route('/')
 def home():
     html = """
     <html>
         <head>
-            <title>Tony Cloud Lab Server</title>
+            <title>Tony Cloud Lab ({APP_ENV})</title>
         </head>
         <body style="background-color: #1F778D">
             <p style="text-align: center;">
                 <span style="color:#FFFFFF;">
-                    <span style="font-size:100px;">Welcome to Tony Cloud Lab Server</span>
+                    <span style="font-size:100px;">
+                        Welcome to Tony Cloud Lab Server<br>({APP_ENV} Environment)
+                    </span>
                 </span>
             </p>
         </body>
