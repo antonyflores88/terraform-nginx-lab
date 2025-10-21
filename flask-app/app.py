@@ -10,7 +10,7 @@ def get_environment():
     return f"Current Environment: {ENVIRONMENT}", 200
 @app.route('/')
 def home():
-    html = """
+    html = f"""
     <html>
         <head>
             <title>Tony Cloud Lab ({ENVIRONMENT})</title>
