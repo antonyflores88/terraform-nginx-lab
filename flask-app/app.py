@@ -13,13 +13,13 @@ def home():
     html = """
     <html>
         <head>
-            <title>Tony Cloud Lab ({APP_ENV})</title>
+            <title>Tony Cloud Lab ({ENVIRONMENT})</title>
         </head>
         <body style="background-color: #1F778D">
             <p style="text-align: center;">
                 <span style="color:#FFFFFF;">
                     <span style="font-size:100px;">
-                        Welcome to Tony Cloud Lab Server<br>({APP_ENV} Environment)
+                        Welcome to Tony Cloud Lab Server<br>({ENVIRONMENT} Environment)
                     </span>
                 </span>
             </p>
