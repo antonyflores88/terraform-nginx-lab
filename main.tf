@@ -36,7 +36,7 @@ resource "docker_container" "nginx" {
 }
 
 #adding postgres container
-resource "docker_image" "postgres" {
+resource "docker_container" "postgres" {
   name = "postgres-prod"
   image_id = "postgres:latest"  
   env = [
@@ -54,7 +54,7 @@ resource "docker_image" "postgres" {
 }
 
 #adding redis container
-resource "docker_image" "redis" {
+resource "docker_container" "redis" {
   name = "redis-staging"
   image_id = "redis:latest"  
   networks_advanced {
@@ -118,7 +118,7 @@ resource "docker_container" "app_staging" {
   }
 
   env = ["ENVIRONMENT=staging", "REDIS_HOST=redis-staging"]
-  
+
   depends_on = [ docker_container.redis ]
 
 }
