@@ -35,7 +35,36 @@ resource "docker_container" "nginx" {
     ]
 }
 
+#adding postgres container
+resource "docker_image" "postgres" {
+  name = "postgres-prod"
+  image_id = "postgres:latest"  
+  env = [
+    "POSTGRES_USER=tony",
+    "POSTGRES_PASSWORD=superpass",
+    "POSTGRES_DB=tonylab"
+  ]
+  networks_advanced {
+    name = docker_network.vnet_prod.name
+  }
+  ports {
+    internal = 5432
+    external = 5432
+  }
+}
 
+#adding redis container
+resource "docker_image" "redis" {
+  name = "redis-staging"
+  image_id = "redis:latest"  
+  networks_advanced {
+    name = docker_network.vnet_staging.name
+  }
+  ports {
+    internal = 6379
+    external = 6379
+  }
+}
 
 
 
@@ -62,7 +91,15 @@ resource "docker_container" "app_prod" {
     name = docker_network.vnet_prod.name
   }
 
-    env = ["ENVIRONMENT=prod"]
+    env = [
+      "ENVIRONMENT=prod", 
+      "DB_HOST=postgres-prod", 
+      "DB_USER=tony", 
+      "DB_PASSWORD=superpass", 
+      "DB_NAME=tonylab"
+      ]
+    
+  depends_on = [ docker_container.postgres ]
 
 }
 
@@ -80,7 +117,9 @@ resource "docker_container" "app_staging" {
     name = docker_network.vnet_staging.name
   }
 
-    env = ["ENVIRONMENT=staging"]
+  env = ["ENVIRONMENT=staging", "REDIS_HOST=redis-staging"]
+  
+  depends_on = [ docker_container.redis ]
 
 }
 

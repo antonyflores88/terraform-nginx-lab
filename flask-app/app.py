@@ -5,6 +5,20 @@ app = Flask(__name__)
 
 #Getting environment variables
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'dev')
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+REDIS_HOST = os.getenv("REDIS_HOST")
+
+@app.route('/check')
+def check_connections():
+    return jsonify({
+        "env": ENVIRONMENT,
+        "db_host": DB_HOST,
+        "redis_host": REDIS_HOST
+    }), 200
+
 @app.route('/env')
 def get_environment():
     return f"Current Environment: {ENVIRONMENT}", 200
