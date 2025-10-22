@@ -1,3 +1,5 @@
+import psycopg
+import redis
 from flask import Flask, Response, jsonify
 import os
 
@@ -13,11 +15,39 @@ REDIS_HOST = os.getenv("REDIS_HOST")
 
 @app.route('/check')
 def check_connections():
-    return jsonify({
-        "env": ENVIRONMENT,
-        "db_host": DB_HOST,
-        "redis_host": REDIS_HOST
-    }), 200
+    status = {"env": ENVIRONMENT}
+
+    # PostgreSQL check (for prod)
+    if DB_HOST:
+        try:
+            with psycopg.connect(
+                host=DB_HOST,
+                dbname=DB_NAME,
+                user=DB_USER,
+                password=DB_PASS,
+                connect_timeout=3
+            ) as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT 1;")
+                    cur.fetchone()
+            status["db_host"] = DB_HOST
+            status["db_status"] = "ok"
+        except Exception as e:
+            status["db_host"] = DB_HOST
+            status["db_status"] = f"error: {e.__class__.__name__}"
+
+    # Redis check (for staging)
+    if REDIS_HOST:
+        try:
+            r = redis.Redis(host=REDIS_HOST, port=6379, socket_connect_timeout=3)
+            pong = r.ping()
+            status["redis_host"] = REDIS_HOST
+            status["redis_status"] = "ok" if pong else "no-pong"
+        except Exception as e:
+            status["redis_host"] = REDIS_HOST
+            status["redis_status"] = f"error: {e.__class__.__name__}"
+
+    return jsonify(status), 200
 
 @app.route('/env')
 def get_environment():
