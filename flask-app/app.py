@@ -21,7 +21,11 @@ def check_connections():
     if DB_HOST:
         try:
             conn = psycopg.connect(
-            f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}",
+            host=DB_HOST,
+            port=5432,
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
             connect_timeout=3
             )
             cur = conn.cursor()
