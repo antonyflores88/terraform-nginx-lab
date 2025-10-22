@@ -20,8 +20,10 @@ def check_connections():
     # PostgreSQL check (for prod)
     if DB_HOST:
         try:
-            conn = psycopg.connect(f"host={DB_HOST} user={DB_USER} password={DB_PASS} dbname={DB_NAME} connect_timeout=3")
-
+            conn = psycopg.connect(
+            f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}",
+            connect_timeout=3
+            )
             cur = conn.cursor()
             cur.execute("SELECT 1;")
             cur.fetchone()
