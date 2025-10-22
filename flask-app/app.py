@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 import os
 
 app = Flask(__name__)
@@ -33,7 +33,7 @@ def home():
             <p style="text-align: center;">
                 <span style="color:#FFFFFF;">
                     <span style="font-size:100px;">
-                        Welcome to Tony Cloud Lab Server<br>({ENVIRONMENT} Environment)
+                        🚀🚀Welcome to Tony Cloud Lab Server<br>({ENVIRONMENT} Environment)
                     </span>
                 </span>
             </p>
