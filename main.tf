@@ -38,7 +38,7 @@ resource "docker_container" "nginx" {
 #adding postgres container
 resource "docker_container" "postgres" {
   name = "postgres-prod"
-  image_id = "postgres:latest"  
+  image = "postgres:16"  
   env = [
     "POSTGRES_USER=tony",
     "POSTGRES_PASSWORD=superpass",
@@ -56,7 +56,7 @@ resource "docker_container" "postgres" {
 #adding redis container
 resource "docker_container" "redis" {
   name = "redis-staging"
-  image_id = "redis:latest"  
+  image = "redis:7"  
   networks_advanced {
     name = docker_network.vnet_staging.name
   }
