@@ -20,21 +20,25 @@ def check_connections():
     # PostgreSQL check (for prod)
     if DB_HOST:
         try:
-            with psycopg.connect(
-                host=DB_HOST,
-                dbname=DB_NAME,
-                user=DB_USER,
-                password=DB_PASS,
-                connect_timeout=3
-            ) as conn:
-                with conn.cursor() as cur:
-                    cur.execute("SELECT 1;")
-                    cur.fetchone()
+            conn = psycopg.connect(
+            host=DB_HOST,
+            dbname=DB_NAME,
+            user=DB_USER,
+            password=DB_PASS,
+            connect_timeout=3,
+            sslmode="disable"
+            )
+            cur = conn.cursor()
+            cur.execute("SELECT 1;")
+            cur.fetchone()
+            cur.close()
+            conn.close()
             status["db_host"] = DB_HOST
             status["db_status"] = "ok"
         except Exception as e:
             status["db_host"] = DB_HOST
             status["db_status"] = f"error: {e.__class__.__name__}"
+
 
     # Redis check (for staging)
     if REDIS_HOST:
